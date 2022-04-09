@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Amart.Application\Amart.Application.csproj" />
     <ProjectReference Include="..\Amart.Infrastructure\Amart.Infrastructure.csproj" />
   </ItemGroup>
 

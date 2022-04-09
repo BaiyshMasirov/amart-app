@@ -22,11 +22,11 @@ namespace Amart.Application.MediatR.Orders.Commands
 
         public OrderStatus Status { get; set; }
 
-        public IList<Product> Products { get; set; }
+        public IList<Guid> ProductsId { get; set; }
 
         public CreateOrderCommand()
         {
-            Products = new List<Product>();
+            ProductsId = new List<Guid>();
         }
     }
 
@@ -46,8 +46,8 @@ namespace Amart.Application.MediatR.Orders.Commands
         {
             try
             {
-                var currentUserOrders =  _context.OrderProducts.Where(x => x.UserId == command.UserId 
-                                                                     && x.Created.DayOfYear == DateTime.Now.DayOfYear);
+                var currentUserOrders = _context.OrderProducts.Where(x => x.UserId == command.UserId
+                                                                    && x.Created.DayOfYear == DateTime.Now.DayOfYear);
 
                 if (currentUserOrders.Count() != 0)
                     return Result.Failure("You already have 10 order, try tomorrow");
@@ -63,11 +63,11 @@ namespace Amart.Application.MediatR.Orders.Commands
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                foreach (var product in command.Products)
+                foreach (var product in command.ProductsId)
                 {
                     var orderProduct = new OrderProduct
                     {
-                        ProductId = product.Id,
+                        ProductId = product,
                         OrderId = order.Id,
                         Created = DateTime.Now,
                         UserId = command.UserId

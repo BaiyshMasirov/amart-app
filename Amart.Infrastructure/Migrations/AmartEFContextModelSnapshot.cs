@@ -50,6 +50,38 @@ namespace Amart.Infrastructure.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("Amart.Domain.Entities.OrderProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OrderProducts");
+                });
+
             modelBuilder.Entity("Amart.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -80,56 +112,56 @@ namespace Amart.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3b7bb906-4d07-4e3b-9590-a08341e3e34b"),
-                            Created = new DateTime(2022, 4, 9, 13, 13, 1, 164, DateTimeKind.Local).AddTicks(9480),
+                            Id = new Guid("10ccb2b3-731b-4cac-a93d-3df24540a302"),
+                            Created = new DateTime(2022, 4, 9, 15, 22, 43, 297, DateTimeKind.Local).AddTicks(5725),
                             Name = "IPhone 13S",
                             Price = 250m,
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("8dbacb5f-371d-4d35-bd41-65967bce80ce"),
-                            Created = new DateTime(2022, 4, 9, 13, 13, 1, 165, DateTimeKind.Local).AddTicks(321),
+                            Id = new Guid("8127a231-aa93-46c6-a4ec-b8f1846bc348"),
+                            Created = new DateTime(2022, 4, 9, 15, 22, 43, 297, DateTimeKind.Local).AddTicks(6472),
                             Name = "Acer Aspire",
                             Price = 1250m,
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("5c5ffe31-0b04-4ed1-8ca6-b059e5157ba3"),
-                            Created = new DateTime(2022, 4, 9, 13, 13, 1, 165, DateTimeKind.Local).AddTicks(330),
+                            Id = new Guid("2eee3c9d-8ccb-4eee-9a18-759c758120d2"),
+                            Created = new DateTime(2022, 4, 9, 15, 22, 43, 297, DateTimeKind.Local).AddTicks(6480),
                             Name = "Samsung S20",
                             Price = 1600m,
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("1cc3694a-8686-47db-95c1-f25a93583daf"),
-                            Created = new DateTime(2022, 4, 9, 13, 13, 1, 165, DateTimeKind.Local).AddTicks(333),
+                            Id = new Guid("85af704e-9788-4c64-abb7-cb7427dd15ce"),
+                            Created = new DateTime(2022, 4, 9, 15, 22, 43, 297, DateTimeKind.Local).AddTicks(6482),
                             Name = "Coca cola",
                             Price = 250m,
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("31d14f0c-4d4b-4e78-acb0-f750eb4a5321"),
-                            Created = new DateTime(2022, 4, 9, 13, 13, 1, 165, DateTimeKind.Local).AddTicks(336),
+                            Id = new Guid("b9f2233d-338a-476d-ac73-b3e5f693cf26"),
+                            Created = new DateTime(2022, 4, 9, 15, 22, 43, 297, DateTimeKind.Local).AddTicks(6484),
                             Name = "Ball",
                             Price = 20m,
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("d9f09c1b-9cc2-4e90-9c6a-0be8edda9015"),
-                            Created = new DateTime(2022, 4, 9, 13, 13, 1, 165, DateTimeKind.Local).AddTicks(339),
+                            Id = new Guid("43afef39-2aa2-4b9a-84ee-4c14a78a251a"),
+                            Created = new DateTime(2022, 4, 9, 15, 22, 43, 297, DateTimeKind.Local).AddTicks(6494),
                             Name = "Monitor",
                             Price = 630m,
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("3deafeda-f483-47f1-8b4d-18f97c30d07d"),
-                            Created = new DateTime(2022, 4, 9, 13, 13, 1, 165, DateTimeKind.Local).AddTicks(342),
+                            Id = new Guid("e205d96e-e66d-4bdc-8456-a9ae4abb529a"),
+                            Created = new DateTime(2022, 4, 9, 15, 22, 43, 297, DateTimeKind.Local).AddTicks(6496),
                             Name = "Book",
                             Price = 450m,
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -161,8 +193,8 @@ namespace Amart.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b7158e4d-a47c-41c8-8a94-48992d11da07"),
-                            Created = new DateTime(2022, 4, 9, 13, 13, 1, 162, DateTimeKind.Local).AddTicks(1928),
+                            Id = new Guid("375434fa-02ba-46be-8075-305b27cc4d45"),
+                            Created = new DateTime(2022, 4, 9, 15, 22, 43, 295, DateTimeKind.Local).AddTicks(4580),
                             Login = "Admin",
                             Password = "12345678",
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -174,6 +206,33 @@ namespace Amart.Infrastructure.Migrations
                     b.HasOne("Amart.Domain.Entities.User", null)
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Amart.Domain.Entities.OrderProduct", b =>
+                {
+                    b.HasOne("Amart.Domain.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Amart.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Amart.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Amart.Domain.Entities.Product", b =>

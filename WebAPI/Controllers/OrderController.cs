@@ -41,12 +41,12 @@ namespace WebAPI.Controllers
         /// <param name="query">GetOrdersQuery</param>
         /// <returns>Return pager orders </returns>
         /// <returns>Return error 400 when badrequest</returns>
-        [HttpPost("GetOrders")]
+        [HttpGet("GetOrders")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetOrders([FromBody] GetOrdersQuery query)
+        public async Task<IActionResult> GetOrders(GetOrdersQuery query)
         {
-            return Ok(await Mediator.Send(query))
+            return Ok(await Mediator.Send(query));
         }
     }
 }
