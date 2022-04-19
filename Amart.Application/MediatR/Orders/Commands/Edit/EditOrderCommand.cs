@@ -3,6 +3,7 @@ using Amart.Application.Models;
 using Amart.Domain.Entities;
 using Amart.Domain.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,10 @@ using System.Threading.Tasks;
 
 namespace Amart.Application.MediatR.Orders.Commands
 {
-    public class CreateOrderCommand : IRequest<Result>
+    public class EditOrderCommand : IRequest<Result>
     {
+        public Guid OrderId { get; set; }
+
         public Guid UserId { get; set; }
 
         public string Name { get; set; }
@@ -24,43 +27,40 @@ namespace Amart.Application.MediatR.Orders.Commands
 
         public IList<Guid> ProductsId { get; set; }
 
-        public CreateOrderCommand()
+        public EditOrderCommand()
         {
             ProductsId = new List<Guid>();
         }
     }
 
-    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Result>
+    public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, Result>
     {
         private readonly IAmartEFContext _context;
-        private readonly ILogger<CreateOrderCommandHandler> _logger;
+        private readonly ILogger<EditOrderCommandHandler> _logger;
 
-        public CreateOrderCommandHandler(IAmartEFContext context,
-                                         ILogger<CreateOrderCommandHandler> logger)
+        public EditOrderCommandHandler(IAmartEFContext context,
+                                         ILogger<EditOrderCommandHandler> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public async Task<Result> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
+        public async Task<Result> Handle(EditOrderCommand command, CancellationToken cancellationToken)
         {
             try
             {
-                var currentUserOrders = _context.OrderProducts.Where(x => x.UserId == command.UserId
-                                                                    && x.Created.DayOfYear == DateTime.Now.DayOfYear);
+                var order = await _context.Orders.Where(x => x.Id == command.OrderId).FirstOrDefaultAsync(cancellationToken);
 
-                if (currentUserOrders.Count() != 0)
-                    return Result.Failure("You already have 10 order, try tomorrow");
+                order.Updated = DateTime.Now;
+                order.Name = command.Name;
+                order.TotalAmount = command.TotalAmount;
 
-                var order = new Order
-                {
-                    Name = command.Name,
-                    TotalAmount = command.TotalAmount,
-                    Status = command.Status,
-                    Created = DateTime.Now,
-                };
+                if (order.Status == OrderStatus.Submited)
+                    return Result.Failure("Order already submitted");
 
-                _context.Orders.Add(order);
+                var prevOrderProducts = _context.OrderProducts.Where(x => x.OrderId == command.OrderId).ToList();
+
+                _context.OrderProducts.RemoveRange(prevOrderProducts);
                 await _context.SaveChangesAsync(cancellationToken);
 
                 foreach (var product in command.ProductsId)
@@ -68,7 +68,7 @@ namespace Amart.Application.MediatR.Orders.Commands
                     var orderProduct = new OrderProduct
                     {
                         ProductId = product,
-                        OrderId = order.Id,
+                        OrderId = command.OrderId,
                         Created = DateTime.Now,
                         UserId = command.UserId
                     };
@@ -80,8 +80,8 @@ namespace Amart.Application.MediatR.Orders.Commands
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Create error order with: {ex.Message}");
-                return Result.Failure("Error");
+                _logger.LogError($"Edit error order with: {ex.Message}");
+                return Result.Failure($"Error on create {ex.ToString()}");
             }
         }
     }
